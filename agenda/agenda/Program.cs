@@ -29,12 +29,6 @@
         }
 
 
-        //Mètode endevant o cancelar
-        static bool endevantOcancelar()
-        {
-            bool valid = false;
-            if
-        }
 
         //Mètode per Triar Opció
         static void TriarOpció(char cas)
@@ -77,53 +71,142 @@
         //sW = new StreamWriter(new FileStream(@".\agenda.txt", FileMode.Append));
 
 
-        //mètode per eliminar l'usuari
-        //mètode mostrar usuari
 
+        //Mètode Eliminar Usuari
         static void EliminarUsuari()
         {
-            Console.WriteLine("Escriu el nom i cognom de l'usuari que vulguis eliminar:");
-            string NomCognomEliminar = Console.ReadLine();
-
-            sR = new StreamReader(@".\agenda.txt");
-
-            string NomCognom, linia = "", filaSuport = "", nomFitxer = "", cognomFitxer = "", nomCognomFitxer = "", agenda = "";
-            char cas = '0';
-
             StreamReader sR;
             StreamWriter sW;
+            string nomCognom, linia = "", liniaAux = "", nomFitxer = "", cognomFitxer = "", nomCognomFitxer = "", agenda = "";
+            char opcio = '0';
+            sR = new StreamReader(@".\agenda.txt");
+            Console.WriteLine("Insereix el nom i cognom de l'usuari que vols eliminar:");
+            nomCognom = Console.ReadLine();
 
-            while (!llegir.EndOfStream)
+
+
+            switch (opcio)
             {
-                linia = sR.ReadLine();
-                nomFitxer = linia.Substring(0, linia.IndexOf(';'));
-                filaSuport = linia.Substring(linia.IndexOf(';') + 1);
-                cognomFitxer = filaSuport.Substring(0, filaSuport.IndexOf(';'));
-                nomCognomFitxer = nomFitxer + ' ' + cognomFitxer;
+                case '4':
+                    while (!sR.EndOfStream)
+                    {
+                        linia = sR.ReadLine();
+                        nomFitxer = linia.Substring(0, linia.IndexOf(';'));
+                        liniaAux = linia.Substring(linia.IndexOf(';') + 1);
+                        cognomFitxer = liniaAux.Substring(0, liniaAux.IndexOf(';'));
+                        nomCognomFitxer = nomFitxer + ' ' + cognomFitxer;
 
-                if (NomCognom != nomCognomFitxer)
-                {
-                    if (agenda == "") agenda += linia;
-                    else agenda += "\n" + linia;
-                }
+                        if (nomCognom != nomCognomFitxer)
+                        {
+                            if (agenda == "") agenda += linia;
+                            else agenda += "\n" + linia;
+                        }
+                    }
+                    sR.Close();
+                    sW = new StreamWriter(@".\agenda.txt");
+                    sW.WriteLine(agenda);
+                    sW.Close();
+
+                    break;
+                case 'n':
+                    break;
+
+
+
             }
-
-            sR.Close();
-            sW = new StreamWriter(@".\agenda.txt");
-            sW.WriteLine(agenda);
-            sW.Close();
         }
 
+
+        static void Informacio(string info)
+        {
+            string nom, cognom, dni, numtelefon, dataNaixement, correu;
+            nom = info.Substring(0, info.IndexOf(';'));
+            info = info.Substring(info.IndexOf(';') + 1);
+            cognom = info.Substring(0, info.IndexOf(';'));
+            info = info.Substring(info.IndexOf(';') + 1);
+            info = info.Substring(info.IndexOf(';') + 1);
+            numtelefon = info.Substring(0, info.IndexOf(";"));
+
+            Console.WriteLine($"\tUsuari:   {nom} {cognom}\t\t\t Telèfon: {numtelefon}");
+
+        }
+
+
+        //Mètode per mostrar l'agenda
+        static void MostrarAgenda()
+        {
+            string dades = "";
+            StreamReader sR = new StreamReader(@".\agenda.txt");
+            Console.WriteLine("TOTS ELS USUARIS DE L'AGENDA:");
+            while (!sR.EndOfStream)
+            {
+                dades = sR.ReadLine();
+                Informacio(dades);
+            }
+            sR.Close();
+        }
+
+        //Mètode Ordenar Agenda
+        static void OrdenarAgenda()
+        {
+            string rutaFitxer = "agenda.txt";
+            FileInfo fitxer = new FileInfo(rutaFitxer);
+
+            if (fitxer.Exists)
+            {
+                List<string> linies = new List<string>();
+                using (StreamReader reader = new StreamReader(rutaFitxer))
+                {
+                    string linia;
+                    while ((linia = reader.ReadLine()) != null)
+                    {
+                        linies.Add(linia);
+                    }
+                }
+                {
+                    using (StreamWriter writer = new StreamWriter(rutaFitxer))
+                    {
+                        for (int i = 0; i < linies.Count; i++)
+                        {
+                            writer.WriteLine(linies[i]);
+                        }
+                    }
+
+                    Console.WriteLine("Fitxer d'agenda ordenat alfabèticament.");
+                }
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }
 
-static bool Eliminar(int[] t, ref int nElem, int index)
-{
-    bool res = true;
-    if (index >= 0 && index < nElem)
-    {
-        for (int i = index; i < nElem - 1; i++)
-            t[i] = t[i + 1];
-        nElem–;
-    }
-}
+
