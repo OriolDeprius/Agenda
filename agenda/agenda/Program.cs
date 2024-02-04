@@ -110,34 +110,41 @@
                     break;
                 case 'n':
                     break;
-
-
-
+            
             }
+
+
+
+            
         }
 
 
         static void Informacio(string info)
         {
-            string nom, cognom, dni, numtelefon, dataNaixement, correu;
-            nom = info.Substring(0, info.IndexOf(';'));
-            info = info.Substring(info.IndexOf(';') + 1);
-            cognom = info.Substring(0, info.IndexOf(';'));
-            info = info.Substring(info.IndexOf(';') + 1);
-            info = info.Substring(info.IndexOf(';') + 1);
-            numtelefon = info.Substring(0, info.IndexOf(";"));
+            int index1 = info.IndexOf(';');
+            int index2 = info.IndexOf(';', index1 + 1);
+            int index3 = info.IndexOf(';', index2 + 1);
 
-            Console.WriteLine($"\tUsuari:   {nom} {cognom}\t\t\t Telèfon: {numtelefon}");
+            if (index1 != -1 && index2 != -1 && index3 != -1)
+            {
+                string nom = info.Substring(0, index1);
+                string cognom = info.Substring(index1 + 1, index2 - index1 - 1);
+                string numtelefon = info.Substring(index3 + 1, info.Length - index3 - 1);
 
+                Console.WriteLine($"\tUsuari:   {nom} {cognom}\t\t\t Telèfon: {numtelefon}");
+            }
+            else
+            {
+                Console.WriteLine("Error0");
+            }
         }
-
 
         //Mètode per mostrar l'agenda
         static void MostrarAgenda()
         {
             string dades = "";
             StreamReader sR = new StreamReader(@".\agenda.txt");
-            Console.WriteLine("TOTS ELS USUARIS DE L'AGENDA:");
+            Console.WriteLine("Contactes agenda--->");
             while (!sR.EndOfStream)
             {
                 dades = sR.ReadLine();
@@ -149,13 +156,13 @@
         //Mètode Ordenar Agenda
         static void OrdenarAgenda()
         {
-            string rutaFitxer = "agenda.txt";
-            FileInfo fitxer = new FileInfo(rutaFitxer);
+            string viaFitxer = "agenda.txt";
+            FileInfo fitxer = new FileInfo(viaFitxer);
 
             if (fitxer.Exists)
             {
                 List<string> linies = new List<string>();
-                using (StreamReader reader = new StreamReader(rutaFitxer))
+                using (StreamReader reader = new StreamReader(viaFitxer))
                 {
                     string linia;
                     while ((linia = reader.ReadLine()) != null)
@@ -164,7 +171,7 @@
                     }
                 }
                 {
-                    using (StreamWriter writer = new StreamWriter(rutaFitxer))
+                    using (StreamWriter writer = new StreamWriter(viaFitxer))
                     {
                         for (int i = 0; i < linies.Count; i++)
                         {
@@ -172,40 +179,10 @@
                         }
                     }
 
-                    Console.WriteLine("Fitxer d'agenda ordenat alfabèticament.");
+                    Console.WriteLine("Fitxer ordenat correctament en ordre alfabètic.");
                 }
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 }
 
